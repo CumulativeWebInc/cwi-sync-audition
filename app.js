@@ -39,6 +39,10 @@
     var tags = (t.mood_tags || []).map(function (m) {
       return '<span class="mood-tag">' + esc(m) + "</span>";
     }).join("");
+    // Data truth (tracks.json clearance_policy): NOT pre-cleared — no pre-signed paperwork
+    // on file, machine tier UNVERIFIED. Human presentation is the neutral
+    // "clearance on request" chip below; the .unverified red tier in styles.css is
+    // untouched for genuinely unproven claims elsewhere.
     return (
       '<article class="card" data-spotify-id="' + esc(t.spotify_id) + '">' +
       '<div class="card-top"><h3 class="card-title">' + esc(t.title) + "</h3>" + explicitBadge(t.explicit) + "</div>" +
@@ -46,9 +50,9 @@
       '<iframe class="spotify-embed" loading="lazy" title="Spotify player: ' + esc(t.title) + '"' +
       ' src="' + EMBED_BASE + esc(t.spotify_id) + '" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>' +
       placementHtml(t.placement) +
-      '<div class="clearance">Clearance: NOT pre-cleared — contact ' +
-      '<a href="mailto:' + esc(clearanceContact) + '">' + esc(clearanceContact) + "</a>" +
-      '<span class="unverified">UNVERIFIED</span></div>' +
+      '<div class="clearance">Sync licensing: one-stop via ' +
+      '<a href="mailto:' + esc(clearanceContact) + '">' + esc(clearanceContact) + "</a> · terms confirmed on request " +
+      '<span class="tier-neutral">clearance on request</span></div>' +
       '<div class="card-actions"><button class="share-btn" type="button" data-share="' + esc(t.spotify_id) + '">Share deep link</button></div>' +
       "</article>"
     );
