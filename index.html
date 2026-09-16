@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sync Audition Room — That Boy Hi Hat · Cumulative Web Inc</title>
+<meta name="description" content="Browse the That Boy Hi Hat 24-track catalog for sync licensing. Real audio via Spotify embeds. Editorial mood tags. Cumulative Web Inc.">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sync Audition Room — Cumulative Web Inc">
+<meta property="og:title" content="Sync Audition Room — That Boy Hi Hat 24-Track Catalog">
+<meta property="og:description" content="Audition 24 tracks by That Boy Hi Hat for sync licensing. Real audio, editorial mood tags, verified placements.">
+<meta property="og:url" content="https://cumulativewebinc.github.io/cwi-sync-audition/">
+<meta property="og:image" content="https://cumulativewebinc.github.io/cwi-sync-audition/cwi-logo.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sync Audition Room — That Boy Hi Hat">
+<meta name="twitter:description" content="Audition 24 tracks by That Boy Hi Hat for sync licensing.">
+<meta name="twitter:image" content="https://cumulativewebinc.github.io/cwi-sync-audition/cwi-logo.jpg">
+<link rel="icon" type="image/jpeg" href="cwi-logo.jpg">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header">
+  <img class="logo" src="cwi-logo.jpg" alt="Cumulative Web Inc logo">
+  <div class="header-text">
+    <h1>Sync Audition Room</h1>
+    <p class="subtitle">That Boy Hi Hat — 24-track sync catalog · Cumulative Web Inc</p>
+  </div>
+</header>
+
+<main>
+  <section class="stats-strip" id="statsStrip" aria-label="Catalog stats"></section>
+
+  <section class="controls">
+    <input type="search" id="searchBox" placeholder="Search tracks…" aria-label="Search tracks" autocomplete="off">
+    <div class="chips" id="moodChips" role="group" aria-label="Filter by editorial mood tag"></div>
+  </section>
+
+  <p class="results-count" id="resultsCount" aria-live="polite"></p>
+
+  <section class="grid" id="trackGrid" aria-label="Track list"></section>
+
+  <footer class="truth-footer">
+    <h2>Truth labels</h2>
+    <ul>
+      <li><strong>Editorial tags.</strong> Mood tags are editorial, derived from track titles only — no audio analysis was performed.</li>
+      <li><strong>Observed dates.</strong> 171 monthly listeners observed 2026-09-14; "Zooted Zone" 307,439 lifetime plays per the catalog. Figures are catalog-reported, not real-time Spotify data.</li>
+      <li><strong>Placements.</strong> Only 3 placements are claimed, all VERIFIED on "New Rap Hits" (scan 2026-09-15): #21 Shaka Zulu, #30 Zooted Zone, #31 Doves &amp; Diamonds. No other placements are claimed or implied.</li>
+      <li><strong>Clearance.</strong> The catalog is NOT pre-cleared (rights_certainty_claimed=false per catalog facts). No clean/FCC-safe or instrumental versions are asserted. For sync inquiries contact <a href="mailto:hp@cumulativeweb.com">hp@cumulativeweb.com</a>.</li>
+      <li><strong>Source data.</strong> Machine-readable: <a href="tracks.json">tracks.json</a> · upstream <a href="https://cumulativewebinc.github.io/cwi-learn/catalog.json">cwi-learn catalog.json</a>.</li>
+    </ul>
+  </footer>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
