@@ -23,22 +23,22 @@
 <header class="site-header">
   <img class="logo" src="cwi-logo.jpg" alt="Cumulative Web Inc logo">
   <div class="header-text">
-    <h1>Sync Audition Room</h1>
-    <p class="subtitle">That Boy Hi Hat — 24-track sync catalog · Cumulative Web Inc</p>
+    <h1 data-i18n="header.title">Sync Audition Room</h1>
+    <p class="subtitle" data-i18n="header.subtitle">That Boy Hi Hat — 24-track sync catalog · Cumulative Web Inc</p>
   </div>
 </header>
 
 <main>
-  <section class="stats-strip" id="statsStrip" aria-label="Catalog stats"></section>
+  <section class="stats-strip" id="statsStrip" data-i18n-aria="stats.aria" aria-label="Catalog stats"></section>
 
   <section class="controls">
-    <input type="search" id="searchBox" placeholder="Search tracks…" aria-label="Search tracks" autocomplete="off">
-    <div class="chips" id="moodChips" role="group" aria-label="Filter by editorial mood tag"></div>
+    <input type="search" id="searchBox" data-i18n-ph="search.placeholder" placeholder="Search tracks…" data-i18n-aria="search.aria" aria-label="Search tracks" autocomplete="off">
+    <div class="chips" id="moodChips" role="group" data-i18n-aria="chips.aria" aria-label="Filter by editorial mood tag"></div>
   </section>
 
   <p class="results-count" id="resultsCount" aria-live="polite"></p>
 
-  <section class="grid" id="trackGrid" aria-label="Track list"></section>
+  <section class="grid" id="trackGrid" data-i18n-aria="grid.aria" aria-label="Track list"></section>
 
   <footer class="truth-footer">
     <h2>Truth labels</h2>
@@ -53,5 +53,6 @@
 </main>
 
 <script src="app.js"></script>
+<script src="https://cumulativewebinc.github.io/cwi-i18n/i18n.js" data-app="sync-audition"></script>
 </body>
 </html>

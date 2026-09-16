@@ -13,6 +13,17 @@
       .replace(/"/g, "&quot;");
   }
 
+  // i18n: every literal CWI18n.t call with a quoted key below is extracted by
+  // the cwi-i18n retrofit test (tests/check.py); keep each call a quoted literal.
+  // The || English fallback keeps the page working when the loader (or a
+  // language table) is unavailable. The loader also auto-translates any
+  // data-i18n* attributes inside rendered templates.
+  function fill(tpl, vars) {
+    return String(tpl).replace(/\{(\w+)\}/g, function (m, k) {
+      return Object.prototype.hasOwnProperty.call(vars, k) ? vars[k] : m;
+    });
+  }
+
   // Pure helper: resolve a ?track= param to a track, or null. Testable via findTrackById.
   function findTrackById(tracks, spotifyId) {
     if (!spotifyId || typeof spotifyId !== "string") return null;
@@ -22,7 +33,7 @@
 
   function explicitBadge(explicit) {
     if (explicit === true) return '<span class="badge explicit">E</span>';
-    if (explicit === false) return '<span class="badge clean">Clean</span>';
+    if (explicit === false) return '<span class="badge clean" data-i18n="card.clean_badge">Clean</span>';
     return ""; // null/unknown: never invent a rating
   }
 
@@ -31,13 +42,15 @@
   // never ship a dead proof link.
   function placementHtml(p) {
     if (!p || p.status !== "VERIFIED") return "";
+    // "VERIFIED" is a CWI protocol tier term: kept in English in every language.
     var badge = p.claim_url
-      ? '<a class="verified verified-proof" href="' + esc(p.claim_url) + '" target="_blank" rel="noopener" title="View cryptographic proof in the CWI Trust Log">VERIFIED placement</a>'
-      : '<span class="verified">VERIFIED placement</span>';
+      ? '<a class="verified verified-proof" href="' + esc(p.claim_url) + '" target="_blank" rel="noopener" data-i18n-title="card.proof_title" title="View cryptographic proof in the CWI Trust Log" data-i18n="card.placement_badge">VERIFIED placement</a>'
+      : '<span class="verified" data-i18n="card.placement_badge">VERIFIED placement</span>';
     return (
       '<div class="placement">' + badge + " — " +
-      esc(p.playlist) + ' <a href="' + esc(p.playlist_url) + '" target="_blank" rel="noopener">playlist</a>' +
-      ", position " + esc(p.position) + ", scan " + esc(p.scan_date) + "</div>"
+      esc(p.playlist) + ' <a href="' + esc(p.playlist_url) + '" target="_blank" rel="noopener" data-i18n="card.playlist_word">playlist</a>' +
+      ', <span data-i18n="card.position_word">position</span> ' + esc(p.position) +
+      ', <span data-i18n="card.scan_word">scan</span> ' + esc(p.scan_date) + "</div>"
     );
   }
 
@@ -52,14 +65,15 @@
     return (
       '<article class="card" data-spotify-id="' + esc(t.spotify_id) + '">' +
       '<div class="card-top"><h3 class="card-title">' + esc(t.title) + "</h3>" + explicitBadge(t.explicit) + "</div>" +
-      '<div class="tag-row"><span class="tag-label">editorial tags</span>' + tags + "</div>" +
+      '<div class="tag-row"><span class="tag-label" data-i18n="card.tags_label">editorial tags</span>' + tags + "</div>" +
       '<iframe class="spotify-embed" loading="lazy" title="Spotify player: ' + esc(t.title) + '"' +
       ' src="' + EMBED_BASE + esc(t.spotify_id) + '" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>' +
       placementHtml(t.placement) +
-      '<div class="clearance">Sync licensing: one-stop via ' +
-      '<a href="mailto:' + esc(clearanceContact) + '">' + esc(clearanceContact) + "</a> · terms confirmed on request " +
-      '<span class="tier-neutral">clearance on request</span></div>' +
-      '<div class="card-actions"><button class="share-btn" type="button" data-share="' + esc(t.spotify_id) + '">Share deep link</button></div>' +
+      '<div class="clearance">' +
+      fill(((typeof CWI18n !== "undefined") && CWI18n.t("card.clearance_line")) || "Sync licensing: one-stop via {email} · terms confirmed on request",
+        { email: '<a href="mailto:' + esc(clearanceContact) + '">' + esc(clearanceContact) + "</a>" }) +
+      ' <span class="tier-neutral" data-i18n="card.clearance_chip">clearance on request</span></div>' +
+      '<div class="card-actions"><button class="share-btn" type="button" data-share="' + esc(t.spotify_id) + '" data-i18n="card.share">Share deep link</button></div>' +
       "</article>"
     );
   }
@@ -77,9 +91,10 @@
   function renderChips() {
     var tags = ["All"].concat(allTags(state.tracks));
     var box = document.getElementById("moodChips");
+    var allLabel = ((typeof CWI18n !== "undefined") && CWI18n.t("chips.all")) || "All";
     box.innerHTML = tags.map(function (tag) {
       return '<button class="chip" type="button" data-tag="' + esc(tag) + '" aria-pressed="' +
-        (state.tag === tag ? "true" : "false") + '">' + esc(tag) + "</button>";
+        (state.tag === tag ? "true" : "false") + '">' + (tag === "All" ? esc(allLabel) : esc(tag)) + "</button>";
     }).join("");
   }
 
@@ -97,7 +112,8 @@
     var grid = document.getElementById("trackGrid");
     grid.innerHTML = list.map(function (t) { return cardHtml(t, data.clearance_policy.sync_contact); }).join("");
     document.getElementById("resultsCount").textContent =
-      list.length + " of " + state.tracks.length + " tracks";
+      fill(((typeof CWI18n !== "undefined") && CWI18n.t("results.count")) || "{shown} of {total} tracks",
+        { shown: list.length, total: state.tracks.length });
   }
 
   function renderStats(data) {
@@ -105,13 +121,18 @@
     var scanDate = verified.length ? verified[0].placement.scan_date : null;
     var zooted = (data.metrics.track_metrics && data.metrics.track_metrics["Zooted Zone"]) || null;
     var pills = [
-      "<strong>" + state.tracks.length + "</strong> tracks",
-      "<strong>" + verified.length + "</strong> verified placements" + (scanDate ? " (scan " + esc(scanDate) + ")" : ""),
-      "<strong>" + esc(data.metrics.monthly_listeners) + "</strong> monthly listeners (observed " + esc(data.metrics.observed) + ")"
+      fill(((typeof CWI18n !== "undefined") && CWI18n.t("stats.tracks")) || "{n} tracks",
+        { n: "<strong>" + state.tracks.length + "</strong>" }),
+      fill(((typeof CWI18n !== "undefined") && CWI18n.t("stats.placements")) || "{n} verified placements",
+        { n: "<strong>" + verified.length + "</strong>" }) +
+        (scanDate ? " " + fill(((typeof CWI18n !== "undefined") && CWI18n.t("stats.scan")) || "(scan {date})",
+          { date: esc(scanDate) }) : ""),
+      fill(((typeof CWI18n !== "undefined") && CWI18n.t("stats.listeners")) || "{n} monthly listeners (observed {date})",
+        { n: "<strong>" + esc(data.metrics.monthly_listeners) + "</strong>", date: esc(data.metrics.observed) })
     ];
     if (zooted) {
-      pills.push('<strong>' + esc(zooted.lifetime_spotify_plays.toLocaleString("en-US")) +
-        "</strong> lifetime plays — Zooted Zone (catalog-reported)");
+      pills.push(fill(((typeof CWI18n !== "undefined") && CWI18n.t("stats.lifetime")) || "{n} lifetime plays — Zooted Zone (catalog-reported)",
+        { n: "<strong>" + esc(zooted.lifetime_spotify_plays.toLocaleString("en-US")) + "</strong>" }));
     }
     document.getElementById("statsStrip").innerHTML =
       pills.map(function (p) { return '<span class="stat-pill">' + p + "</span>"; }).join("");
@@ -156,16 +177,17 @@
       var link = deepLink(btn.getAttribute("data-share"));
       function done() {
         btn.classList.add("copied");
-        btn.textContent = "Link copied";
+        btn.textContent = ((typeof CWI18n !== "undefined") && CWI18n.t("card.share_copied")) || "Link copied";
         setTimeout(function () {
           btn.classList.remove("copied");
-          btn.textContent = "Share deep link";
+          btn.textContent = ((typeof CWI18n !== "undefined") && CWI18n.t("card.share")) || "Share deep link";
         }, 2000);
       }
+      var promptTitle = ((typeof CWI18n !== "undefined") && CWI18n.t("card.share_prompt")) || "Copy deep link:";
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(link).then(done, function () { window.prompt("Copy deep link:", link); });
+        navigator.clipboard.writeText(link).then(done, function () { window.prompt(promptTitle, link); });
       } else {
-        window.prompt("Copy deep link:", link);
+        window.prompt(promptTitle, link);
       }
     });
   }
@@ -185,7 +207,7 @@
       })
       .catch(function (err) {
         document.getElementById("trackGrid").innerHTML =
-          "<p>Could not load the catalog data. Please reload.</p>";
+          "<p>" + esc(((typeof CWI18n !== "undefined") && CWI18n.t("app.load_error")) || "Could not load the catalog data. Please reload.") + "</p>";
         console.error(err);
       });
   }
