@@ -26,10 +26,16 @@
     return ""; // null/unknown: never invent a rating
   }
 
+  // VERIFIED badges link to the cryptographic proof in the CWI Trust Log.
+  // Gated on claim_url: a badge with no live proof URL renders unlinked —
+  // never ship a dead proof link.
   function placementHtml(p) {
     if (!p || p.status !== "VERIFIED") return "";
+    var badge = p.claim_url
+      ? '<a class="verified verified-proof" href="' + esc(p.claim_url) + '" target="_blank" rel="noopener" title="View cryptographic proof in the CWI Trust Log">VERIFIED placement</a>'
+      : '<span class="verified">VERIFIED placement</span>';
     return (
-      '<div class="placement"><span class="verified">VERIFIED placement</span> — ' +
+      '<div class="placement">' + badge + " — " +
       esc(p.playlist) + ' <a href="' + esc(p.playlist_url) + '" target="_blank" rel="noopener">playlist</a>' +
       ", position " + esc(p.position) + ", scan " + esc(p.scan_date) + "</div>"
     );
@@ -164,25 +170,28 @@
     });
   }
 
-  fetch("tracks.json")
-    .then(function (r) { if (!r.ok) throw new Error("tracks.json load failed: " + r.status); return r.json(); })
-    .then(function (data) {
-      window.__data = data;
-      state.tracks = data.tracks;
-      renderStats(data);
-      renderChips();
-      renderGrid(data);
-      bindEvents(data);
-      handleDeepLink();
-    })
-    .catch(function (err) {
-      document.getElementById("trackGrid").innerHTML =
-        "<p>Could not load the catalog data. Please reload.</p>";
-      console.error(err);
-    });
+  // Browser-only bootstrap: guarded so the pure helpers stay require()-able in node tests.
+  if (typeof document !== "undefined") {
+    fetch("tracks.json")
+      .then(function (r) { if (!r.ok) throw new Error("tracks.json load failed: " + r.status); return r.json(); })
+      .then(function (data) {
+        window.__data = data;
+        state.tracks = data.tracks;
+        renderStats(data);
+        renderChips();
+        renderGrid(data);
+        bindEvents(data);
+        handleDeepLink();
+      })
+      .catch(function (err) {
+        document.getElementById("trackGrid").innerHTML =
+          "<p>Could not load the catalog data. Please reload.</p>";
+        console.error(err);
+      });
+  }
 
   // Expose pure helpers for tests (harmless in browser).
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = { findTrackById: findTrackById, esc: esc };
+    module.exports = { findTrackById: findTrackById, esc: esc, placementHtml: placementHtml };
   }
 })();
