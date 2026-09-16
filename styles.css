@@ -226,6 +226,22 @@ main {
   letter-spacing: 0.06em;
 }
 
+/* Neutral status chip for human presentation of a standing contact-based offer
+   (e.g. clearance on request). Deliberately NOT red: the .unverified tier stays
+   reserved for genuinely unproven claims. */
+.clearance .tier-neutral {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 700;
+  border: 1px solid #8a7a45;
+  color: #d3b968;
+  background: rgba(211, 185, 104, 0.10);
+  border-radius: 5px;
+  padding: 1px 6px;
+  margin-left: 6px;
+  letter-spacing: 0.06em;
+}
+
 .clearance a { color: var(--accent); }
 
 .card-actions { display: flex; gap: 8px; margin-top: auto; }

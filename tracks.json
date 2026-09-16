@@ -15,7 +15,8 @@
   "clearance_policy": {
     "note": "CWI catalog facts (catalog.json, 2026-09-15): rights_certainty_claimed=false. No clean/FCC-safe or instrumental versions exist. No 'one-stop' or pre-cleared rights claims are made.",
     "pre_cleared": false,
-    "sync_contact": "hp@cumulativeweb.com"
+    "sync_contact": "hp@cumulativeweb.com",
+    "clearance_note": "No pre-signed clearance paperwork on file; one-stop clearance granted per request via hp@cumulativeweb.com."
   },
   "metrics": {
     "monthly_listeners": 171,
