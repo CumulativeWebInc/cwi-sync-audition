@@ -27,8 +27,7 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 20px 16px;
-  border-bottom: 1px solid var(--line);
+  padding: 20px 16px;  border-bottom: 1px solid var(--line);
   background: linear-gradient(180deg, #101319, var(--bg));
   position: sticky;
   top: 0;
@@ -284,3 +283,17 @@ iframe.spotify-embed {
 .truth-footer li { margin-bottom: 8px; }
 .truth-footer strong { color: var(--text); }
 .truth-footer a { color: var(--accent); }
+
+/* OS-fit retrofit 2026-09-23: above-fold sync-licensing CTA strip */
+.cta-strip {
+  background: var(--panel-2);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 12px 18px;
+  margin: 0 0 16px;
+}
+.cta-strip p { margin: 0; font-size: .95rem; }
+.cta-strip .cta-link {
+  color: var(--accent);
+  font-weight: 700;
+}
