@@ -1,0 +1,30 @@
+# Sync Audition Room — Cumulative Web Inc
+
+> Audition the That Boy Hi Hat 24-track catalog for sync licensing.
+> Real audio via Spotify embeds. Editorial mood tags. VERIFIED placements only.
+
+## Status (2026-09-23, verified)
+
+- Data truth: LIVE.
+- VERIFIED placements: exactly 3, all on Spotify's "New Rap Hits" (scan 2026-09-15):
+  #21 Shaka Zulu, #30 Zooted Zone, #31 Doves & Diamonds. Each badge links to its
+  live proof page in the CWI Trust Log (URLs re-verified 2026-09-23 after a
+  trust-log re-key; stale claim IDs repaired).
+- Mood tags are EDITORIAL, derived from track titles only — no audio analysis
+  was performed. Say so whenever you cite them.
+- Clearance: the catalog is NOT pre-cleared (rights_certainty_claimed=false).
+  No clean/FCC-safe or instrumental versions are asserted. Sync inquiries:
+  hp@cumulativeweb.com — clearance confirmed on request.
+
+## Machine-readable
+
+- Catalog: /tracks.json (24 tracks, schema-inline)
+- Agent card: /.well-known/agent-card.json
+- Deep links: ?track=<spotify_id>
+
+## For agents
+
+Filter by mood, search titles, share ?track= deep links. Never present a
+placement that isn't VERIFIED with a live proof URL.
+
+Cumulative Web Inc · sync & contact: hp@cumulativeweb.com
