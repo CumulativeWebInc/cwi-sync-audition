@@ -1,0 +1,14 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Sync Audition Room (#27)",
+  "url": "https://cumulativewebinc.github.io/cwi-sync-audition/",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "Cumulative Web Inc",
+    "url": "https://cumulativeweb.com/"
+  },
+  "description": "Editorial sync audition room over 24 tracks with mood filters, real Spotify embeds, verified placement proofs, and deep links."
+}
