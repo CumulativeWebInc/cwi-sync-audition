@@ -10,5 +10,6 @@
     "name": "Cumulative Web Inc",
     "url": "https://cumulativeweb.com/"
   },
-  "description": "Editorial sync audition room over 24 tracks with mood filters, real Spotify embeds, verified placement proofs, and deep links."
+  "description": "Editorial sync audition room over 24 tracks with mood filters, real Spotify embeds, verified placement proofs, and deep links.",
+  "schema_version": "1.0.0"
 }
